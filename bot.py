@@ -1,12 +1,10 @@
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
 
-# Токен берём из переменной окружения
-TOKEN = os.getenv("BOT_TOKEN")
+TOKEN = os.getenv("BOT_TOKEN")  # токен из переменной окружения
 ADMIN_CHAT_ID = 974242103
 GROUP_CHAT_ID = -1002763129980
 
-# Приветствие и правила
 def start(update, context):
     rules = (
         "✨🐀 Привет! Это Витебская кдшная подслушка ✨🐀\n"
@@ -19,7 +17,6 @@ def start(update, context):
     )
     update.message.reply_text(rules)
 
-# Обработка сообщений
 def forward_message(update, context):
     user = update.message.from_user
     username = user.username or "Без никнейма"
@@ -40,26 +37,9 @@ def main():
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, forward_message))
 
-    # Render задаёт PORT автоматически
-    PORT = int(os.getenv("PORT", "10000"))
-    DOMAIN = os.getenv("WEBHOOK_DOMAIN")  # например https://имя.onrender.com
-
-    # Важно: слушаем порт и адрес 0.0.0.0
-    updater.start_webhook(
-        listen="0.0.0.0",
-        port=PORT,
-        url_path=TOKEN
-    )
-
-    # Устанавливаем вебхук в Telegram
-    webhook_url = f"{DOMAIN}/{TOKEN}"
-    updater.bot.set_webhook(webhook_url)
-
-    print("Webhook установлен:", webhook_url)
-
-    # idle держит процесс активным
+    print("Бот запущен через polling")
+    updater.start_polling()
     updater.idle()
 
 if __name__ == "__main__":
     main()
-
