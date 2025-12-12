@@ -51,7 +51,10 @@ def main():
         port=PORT,
         url_path=TOKEN
     )
-    updater.bot.set_webhook(f"{DOMAIN}/{TOKEN}")
+    updater.bot.set_webhook(
+        url=f"{DOMAIN}/{TOKEN}",
+        drop_pending_updates=True
+    )
 
     print(f"Webhook установлен: {DOMAIN}/{TOKEN}, слушаю порт {PORT}")
     updater.idle()
