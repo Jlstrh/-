@@ -3,5 +3,5 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 COPY . .
-CMD ["python", "bot.py"]
 EXPOSE 10000
+CMD ["python", "bot.py"]
